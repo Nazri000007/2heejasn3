@@ -1,0 +1,42 @@
+def sendMention(to, text="", mids=[]):
+    arrData = ""
+    arr = []
+    mention = "@NazriGans "
+    if mids == []:
+        raise Exception("Invalid mids")
+    if "@!" in text:
+        if text.count("@!") != len(mids):
+            raise Exception("Invalid mids")
+        texts = text.split("@!")
+        textx = ""
+        for mid in mids:
+            textx += str(texts[mids.index(mid)])
+            slen = len(textx)
+            elen = len(textx) + 15
+            arrData = {'S':str(slen), 'E':str(elen - 4), 'M':mid}
+            arr.append(arrData)
+            textx += mention
+        textx += str(texts[len(mids)])
+    else:
+        textx = ""
+        slen = len(textx)
+        elen = len(textx) + 15
+        arrData = {'S':str(slen), 'E':str(elen - 4), 'M':mids[0]}
+        arr.append(arrData)
+        textx += mention + str(text)
+    client.sendMessage(to, textx, {'MENTION': str('{"MENTIONEES":' + json.dumps(arr) + '}')}, 0)
+=====================================================================================================
+elif cmd == 'mention':
+                                group = client.getGroup(to)
+                                midMembers = [contact.mid for contact in group.members]
+                                midSelect = len(midMembers)//20
+                                for mentionMembers in range(midSelect+1):
+                                    no = 0
+                                    ret_ = "╔════════════════\n╠  Mention Members \n╠════════════════\n╠════════════════"
+                                    dataMid = []
+                                    for dataMention in group.members[mentionMembers*20 : (mentionMembers+1)*20]:
+                                        dataMid.append(dataMention.mid)
+                                        no += 1
+                                        ret_ += "\n╠ {}. @!".format(str(no))
+                                    ret_ += "\n╠════════════════\n╠ Total Member\n╠ {} \n╚════════════════".format(str(len(dataMid)))
+                                    sendMention(to, ret_, dataMid)
